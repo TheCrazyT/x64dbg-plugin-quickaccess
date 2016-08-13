@@ -17,7 +17,7 @@ bool findByString(QString txt,QAction* action){
                 }
             }
         }else{
-            if(action->text().replace("&","").compare(txt)==0){
+            if(action->text().replace("&","").startsWith(txt)==0){
                 emit action->trigger();
                 return true;
             }
