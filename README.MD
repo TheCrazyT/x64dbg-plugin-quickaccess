@@ -3,6 +3,5 @@ Just press ctrl+3 and you can access any menu.
 Somebody might know that feature from eclipse already.
 Might get some improvements later ...
 
-
-TODO:
-Find some online build service for windows executables :/
+Binary Releases can be found under:
+https://github.com/TheCrazyT/x64dbg-plugin-quickaccess/releases
