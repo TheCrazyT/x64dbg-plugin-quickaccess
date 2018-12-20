@@ -4,4 +4,4 @@ Somebody might know that feature from eclipse already.
 Might get some improvements later ...
 
 Binary Releases can be found under:
-https://github.com/TheCrazyT/x64dbg-plugin-quickaccess/releases
+https://bintray.com/thecrazyt/x64dbg/x64dbg-plugin-quickaccess#files
