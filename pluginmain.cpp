@@ -85,20 +85,22 @@ extern "C" DLL_EXPORT BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason,
     return TRUE;
 }
 
+void show_qa_window(){
+	qwin.show();
+	qwin.raise();
+	qwin.activateWindow();
+	txt.setVisible(true);
+	txt.setEnabled(true);
+	txt.setFocus();
+}
+
 bool cb_plugin_command(
 	int argc, //argument count (number of arguments + 1)
 	char** argv //array of arguments (argv[0] is the full command, arguments start at argv[1])
 )
 {
 	if(strcmp(argv[0],"quickaccess")==0){
-		qwin.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
-		qwin.setModal(true);
-		qwin.show();
-    		qwin.raise();
-    		qwin.activateWindow();
-		txt.setVisible(true);
-		txt.setEnabled(true);
-		txt.setFocus();
+		show_qa_window();
 	}
 	return true;
 }
@@ -107,13 +109,7 @@ void cb_plugin_menuentry(CBTYPE bType,void* info)
 	PLUG_CB_MENUENTRY* callbackInfo = (PLUG_CB_MENUENTRY*)info;
 	if(callbackInfo->hEntry == ME_QUICKACCESS){
 		dbg("Menu clicked");
-		qwin.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
-		qwin.show();
-    		qwin.raise();
-    		qwin.activateWindow();
-		txt.setVisible(true);
-		txt.setEnabled(true);
-		txt.setFocus();
+		show_qa_window();
 	}else{
        		dbgf("Entry: %016x != %16x\n",callbackInfo->hEntry,ME_QUICKACCESS);
 	}
@@ -139,6 +135,8 @@ void initMenu(){
         qwin.setBaseSize(200,100);
         qwin.setParent(mwnd);
         qwin.setLayout(layout.layout());
+	qwin.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+	qwin.setModal(true);
         helper.setParent(&txt);
 
 
