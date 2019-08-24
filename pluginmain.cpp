@@ -17,6 +17,7 @@
 #include <QStringListModel>
 #include <qlist.h>
 #include <pluginsdk/_plugins.h>
+#include <string.h>
 
 #include "helper.h"
 #define plugin_name "QuickAccess"
@@ -56,11 +57,6 @@ DLL_EXPORT bool plugstop()
     return true;
 }
 void parseMenu(QAction* action,int level){
-    if(action->text().contains("QuickAccess")){
-        if(action->menu() == NULL){
-            action->setShortcut(QKeySequence("Ctrl+3"));
-        }
-    }
     QMenu* menu = action->menu();
     if(menu != NULL){
         for(QAction* action2 : menu->actions()){
@@ -88,19 +84,31 @@ extern "C" DLL_EXPORT BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason,
     return TRUE;
 }
 
-
+void cb_plugin_command((
+	int argc //argument count (number of arguments + 1)
+	char* argv[] //array of arguments (argv[0] is the full command, arguments start at argv[1])
+))
+{
+	if(strcmp(argv[0],"quickaccess")==0){
+		qwin.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+		qwin.show();
+		txt.setVisible(true);
+		txt.setEnabled(true);
+		txt.setFocus();
+	}
+}
 void cb_plugin_menuentry(CBTYPE bType,void* info)
 {
 	PLUG_CB_MENUENTRY* callbackInfo = (PLUG_CB_MENUENTRY*)info;
 	if(callbackInfo->hEntry == ME_QUICKACCESS){
-        dbg("Menu clicked");
-        qwin.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
-        qwin.show();
-        txt.setVisible(true);
-        txt.setEnabled(true);
-        txt.setFocus();
+		dbg("Menu clicked");
+		qwin.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+		qwin.show();
+		txt.setVisible(true);
+		txt.setEnabled(true);
+		txt.setFocus();
 	}else{
-        dbgf("Entry: %016x != %16x\n",callbackInfo->hEntry,ME_QUICKACCESS);
+       		dbgf("Entry: %016x != %16x\n",callbackInfo->hEntry,ME_QUICKACCESS);
 	}
 }
 void cb_plugin_windows_event(CBTYPE bType,void* info)
@@ -153,10 +161,9 @@ void initMenu(){
 
 void init(PLUG_INITSTRUCT* initStruct)
 {
-    dbgf("ME_QUICKACCESS: %016x\n",ME_QUICKACCESS);
+	dbgf("ME_QUICKACCESS: %016x\n",ME_QUICKACCESS);
 	_plugin_registercallback(initStruct->pluginHandle,CB_MENUENTRY,&cb_plugin_menuentry);
 	//_plugin_registercallback(initStruct->pluginHandle,CB_WINEVENTGLOBAL,&cb_plugin_windows_event);
-
-    timer.singleShot(500,&initMenu);
-
+	_plugin_registercommand(initStruct->pluginHandle,"quickaccess",&cb_plugin_command,false);
+	timer.singleShot(500,&initMenu);
 }
