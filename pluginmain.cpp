@@ -92,6 +92,7 @@ bool cb_plugin_command(
 {
 	if(strcmp(argv[0],"quickaccess")==0){
 		qwin.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+		qwin.setModal(true);
 		qwin.show();
 		txt.setVisible(true);
 		txt.setEnabled(true);
