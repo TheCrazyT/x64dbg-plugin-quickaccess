@@ -97,6 +97,7 @@ bool cb_plugin_command(
 		txt.setEnabled(true);
 		txt.setFocus();
 	}
+	return true;
 }
 void cb_plugin_menuentry(CBTYPE bType,void* info)
 {
