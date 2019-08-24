@@ -94,6 +94,8 @@ bool cb_plugin_command(
 		qwin.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
 		qwin.setModal(true);
 		qwin.show();
+    		qwin.raise();
+    		qwin.activateWindow();
 		txt.setVisible(true);
 		txt.setEnabled(true);
 		txt.setFocus();
@@ -107,6 +109,8 @@ void cb_plugin_menuentry(CBTYPE bType,void* info)
 		dbg("Menu clicked");
 		qwin.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
 		qwin.show();
+    		qwin.raise();
+    		qwin.activateWindow();
 		txt.setVisible(true);
 		txt.setEnabled(true);
 		txt.setFocus();
