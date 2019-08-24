@@ -18,6 +18,7 @@
 #include <qlist.h>
 #include <pluginsdk/_plugins.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "helper.h"
 #define plugin_name "QuickAccess"
@@ -84,7 +85,7 @@ extern "C" DLL_EXPORT BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason,
     return TRUE;
 }
 
-void cb_plugin_command(
+bool cb_plugin_command(
 	int argc, //argument count (number of arguments + 1)
 	char** argv //array of arguments (argv[0] is the full command, arguments start at argv[1])
 )
