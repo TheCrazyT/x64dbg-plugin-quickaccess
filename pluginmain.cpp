@@ -26,6 +26,9 @@
 #define plugin_version 001
 
 
+class gui_launcher;
+
+gui_launcher* gl;
 
 QMenuBar* menuBar;
 QDialog qwin;
@@ -95,11 +98,18 @@ void show_qa_window(){
 	txt.setFocus();
 }
 
-class ShowQaWinThread : public QThread
+class gui_launcher : public QObject
 {
-    void run() Q_DECL_OVERRIDE {
-		show_qa_window();
-	}
+public:
+  virtual bool event( QEvent *ev )
+  {   
+    if( ev->type() == QEvent::User )
+    {
+      show_qa_window();
+      return true;
+    }
+    return false;
+  }
 };
 
 bool cb_plugin_command(
@@ -108,8 +118,7 @@ bool cb_plugin_command(
 )
 {
 	if(strcmp(argv[0],"quickaccess")==0){
-		QThread* window_thread = new ShowQaWinThread();
-		window_thread->start();
+		QCoreApplication::postEvent( gl, new QEvent( QEvent::User ) );
 	}
 	return true;
 }
@@ -118,8 +127,7 @@ void cb_plugin_menuentry(CBTYPE bType,void* info)
 	PLUG_CB_MENUENTRY* callbackInfo = (PLUG_CB_MENUENTRY*)info;
 	if(callbackInfo->hEntry == ME_QUICKACCESS){
 		dbg("Menu clicked");
-		QThread* window_thread = new ShowQaWinThread();
-		window_thread->start();
+		show_qa_window();
 	}else{
        		dbgf("Entry: %016x != %16x\n",callbackInfo->hEntry,ME_QUICKACCESS);
 	}
@@ -176,6 +184,7 @@ void initMenu(){
 
 void init(PLUG_INITSTRUCT* initStruct)
 {
+	gl = new gui_launcher();
 	dbgf("ME_QUICKACCESS: %016x\n",ME_QUICKACCESS);
 	_plugin_registercallback(initStruct->pluginHandle,CB_MENUENTRY,&cb_plugin_menuentry);
 	//_plugin_registercallback(initStruct->pluginHandle,CB_WINEVENTGLOBAL,&cb_plugin_windows_event);
