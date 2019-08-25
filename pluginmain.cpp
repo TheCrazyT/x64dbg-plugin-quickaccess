@@ -15,11 +15,11 @@
 #include <QGridLayout>
 #include <QCompleter>
 #include <QStringListModel>
+#include <QThread>
 #include <qlist.h>
 #include <pluginsdk/_plugins.h>
 #include <string.h>
 #include <stdbool.h>
-#include <thread>
 
 #include "helper.h"
 #define plugin_name "QuickAccess"
@@ -95,13 +95,21 @@ void show_qa_window(){
 	txt.setFocus();
 }
 
+class ShowQaWinThread : public QThread
+{
+    void run() Q_DECL_OVERRIDE {
+		show_qa_window();
+	}
+};
+
 bool cb_plugin_command(
 	int argc, //argument count (number of arguments + 1)
 	char** argv //array of arguments (argv[0] is the full command, arguments start at argv[1])
 )
 {
 	if(strcmp(argv[0],"quickaccess")==0){
-		std::thread window_thread (show_qa_window);
+		QThread* window_thread = new ShowQaWinThread();
+		window_thread->start();
 	}
 	return true;
 }
@@ -110,7 +118,8 @@ void cb_plugin_menuentry(CBTYPE bType,void* info)
 	PLUG_CB_MENUENTRY* callbackInfo = (PLUG_CB_MENUENTRY*)info;
 	if(callbackInfo->hEntry == ME_QUICKACCESS){
 		dbg("Menu clicked");
-		std::thread window_thread (show_qa_window);
+		QThread* window_thread = new ShowQaWinThread();
+		window_thread->start();
 	}else{
        		dbgf("Entry: %016x != %16x\n",callbackInfo->hEntry,ME_QUICKACCESS);
 	}
