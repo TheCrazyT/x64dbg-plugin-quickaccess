@@ -19,6 +19,7 @@
 #include <pluginsdk/_plugins.h>
 #include <string.h>
 #include <stdbool.h>
+#include <thread>
 
 #include "helper.h"
 #define plugin_name "QuickAccess"
@@ -100,7 +101,7 @@ bool cb_plugin_command(
 )
 {
 	if(strcmp(argv[0],"quickaccess")==0){
-		show_qa_window();
+		std::thread window_thread (show_qa_window);
 	}
 	return true;
 }
@@ -109,7 +110,7 @@ void cb_plugin_menuentry(CBTYPE bType,void* info)
 	PLUG_CB_MENUENTRY* callbackInfo = (PLUG_CB_MENUENTRY*)info;
 	if(callbackInfo->hEntry == ME_QUICKACCESS){
 		dbg("Menu clicked");
-		show_qa_window();
+		std::thread window_thread (show_qa_window);
 	}else{
        		dbgf("Entry: %016x != %16x\n",callbackInfo->hEntry,ME_QUICKACCESS);
 	}

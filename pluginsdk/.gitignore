@@ -1,0 +1,8 @@
+*.lib
+*.h
+dbghelp
+DeviceNameResolver
+jansson
+lz4
+TitanEngine
+XEDParse

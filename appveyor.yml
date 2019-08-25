@@ -7,5 +7,7 @@ artifacts:
   name: release
 deploy:
 - provider: GitHub
+  on:
+    branch: master
   auth_token:
     secure: p+d6K6Jlo9DJXiqpFrwuK5rpXMQbkyIkj7w8jKVlEbE+vrszJL6X3ybLib+4u3Jn
