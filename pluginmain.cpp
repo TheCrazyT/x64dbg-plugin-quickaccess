@@ -81,6 +81,7 @@ DLL_EXPORT void plugsetup(PLUG_SETUPSTRUCT* setupStruct)
 	if(!_plugin_menuaddentry(hMenu,ME_QUICKACCESS,"QuickAccess")){
         dbg("Error registering the \"quickaccess\" menu!");
 	}
+    _plugin_menuentrysethotkey(pluginHandle,ME_QUICKACCESS,"Ctrl+3");
     dbg("plugsetup done");
 }
 
