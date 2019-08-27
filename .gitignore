@@ -3,9 +3,10 @@ release
 *.o
 *.lnk
 debug
-build-quickaccess-Qt_5_6_0_msvc2015_64-Release
+build*/
 obj
 release
+*.pro.user
 
 #those get generated
 Makefile*
