@@ -3,7 +3,7 @@ image: Visual Studio 2015
 environment:
   matrix:
     - ARCH: 32 
-      MSVC_SUFFIX: 
+      MSVC_SUFFIX: ''
     - ARCH: 64
       MSVC_SUFFIX: _64
 build_script:
