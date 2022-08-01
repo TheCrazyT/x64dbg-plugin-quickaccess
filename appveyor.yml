@@ -3,11 +3,11 @@ image: Visual Studio 2015
 environment:
   matrix:
     - ARCH: 32 
-      MSVC_SUFFIX:
+      MSVC_SUFFIX: 
     - ARCH: 64
       MSVC_SUFFIX: _64
 build_script:
-- ps: "cmd /r echo building for arch: %ARCH%\nInvoke-WebRequest 'https://github.com/x64dbg/x64dbg/releases/download/snapshot/snapshot_2022-07-27_17-04.zip'  -OutFile 'pluginsdk.zip'\ncmd /r rmdir /S /Q pluginsdk\ncmd /r 7z x pluginsdk.zip\ncmd /r dir\ncmd /r dir pluginsdk\n\nGet-Content 'commithash.txt'\n\ncmd /r dir C:\\Qt\ncmd /r dir C:\\Qt\\5.6\\\ncmd /r dir C:\\Qt\\5.6\\msvc2013%MSVC_SUFFIX%\ncmd /r dir C:\\Qt\\5.6\\msvc2013%MSVC_SUFFIX%\\bin\ncmd /r dir \"C:\\Program Files (x86)\\\"\n$Env:path += \";C:\\Qt\\5.6\\msvc2013%MSVC_SUFFIX%\\bin\"\n\npushd 'C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC'    \ncmd /c \"vcvarsall.bat amd%ARCH%&set\" |\nforeach {\n  if ($_ -match \"=\") {\n    $v = $_.split(\"=\"); set-item -force -path \"ENV:\\$($v[0])\"  -value \"$($v[1])\"\n  }\n}\npopd\nwrite-host \"`nVisual Studio 2013 Command Prompt variables set.\" -ForegroundColor Yellow\n\n\ncmd /r qmake quickaccess%ARCH%.pro\ncmd /r dir\ncmd /r nmake\ncmd /r dir"
+- ps: "cmd /r echo building for arch: %ARCH% suffix: %MSVC_SUFFIX%\nInvoke-WebRequest 'https://github.com/x64dbg/x64dbg/releases/download/snapshot/snapshot_2022-07-27_17-04.zip'  -OutFile 'pluginsdk.zip'\ncmd /r rmdir /S /Q pluginsdk\ncmd /r 7z x pluginsdk.zip\ncmd /r dir\ncmd /r dir pluginsdk\n\nGet-Content 'commithash.txt'\n\ncmd /r dir C:\\Qt\ncmd /r dir C:\\Qt\\5.6\\\ncmd /r dir C:\\Qt\\5.6\\msvc2013%MSVC_SUFFIX%\ncmd /r dir C:\\Qt\\5.6\\msvc2013%MSVC_SUFFIX%\\bin\ncmd /r dir \"C:\\Program Files (x86)\\\"\n$Env:path += \";C:\\Qt\\5.6\\msvc2013\"+$Env:MSVC_SUFFIX+\"\\bin\"\n\npushd 'C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC'    \ncmd /c \"vcvarsall.bat amd%ARCH%&set\" |\nforeach {\n  if ($_ -match \"=\") {\n    $v = $_.split(\"=\"); set-item -force -path \"ENV:\\$($v[0])\"  -value \"$($v[1])\"\n  }\n}\npopd\nwrite-host \"`nVisual Studio 2013 Command Prompt variables set.\" -ForegroundColor Yellow\n\n\ncmd /r qmake quickaccess%ARCH%.pro\ncmd /r dir\ncmd /r nmake\ncmd /r dir"
 artifacts:
 - path: release/quickaccess.dp${ARCH}
   name: release${ARCH}
