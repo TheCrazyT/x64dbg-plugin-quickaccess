@@ -104,9 +104,9 @@ unix {
     INSTALLS += target
 }
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/pluginsdk/ -lx64dbg
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/pluginsdk/ -lx64dbgd
-else:unix: LIBS += -L$$PWD/pluginsdk/ -lx64dbg
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/pluginsdk/ -lx32dbg
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/pluginsdk/ -lx32dbgd
+else:unix: LIBS += -L$$PWD/pluginsdk/ -lx32dbg
 
 INCLUDEPATH += $$PWD/pluginsdk
 DEPENDPATH += $$PWD/pluginsdk
