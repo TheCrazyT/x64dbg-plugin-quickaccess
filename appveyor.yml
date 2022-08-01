@@ -18,4 +18,4 @@ deploy:
   on:
     branch: master
   auth_token:
-    secure: p+d6K6Jlo9DJXiqpFrwuK5rpXMQbkyIkj7w8jKVlEbE+vrszJL6X3ybLib+4u3Jn
+    secure: y2lWns25+B5XT5M7ho50MtyWyKIUK8fs5P+yxjPdkRnb+GptWo6RcuKp9aL1Mdit
