@@ -1,13 +1,20 @@
-#ifndef QUICKACCESS_H
-#define QUICKACCESS_H
+#pragma once
 
-#include "quickaccess_global.h"
+#include <QDialog>
+#include <QMainWindow>
+#include <QLineEdit>
+#include <QMenuBar>
 
-class QUICKACCESSSHARED_EXPORT Quickaccess
-{
-
+class QuickAccess : public QDialog{
+    Q_OBJECT
 public:
-    Quickaccess();
-};
+    explicit QuickAccess(QMainWindow* mwnd);
+    void display();
 
-#endif // QUICKACCESS_H
+private slots:
+    void txtReturnPressed();
+
+private:
+    QLineEdit* txt = nullptr;
+    QMenuBar* menuBar = nullptr;
+};
