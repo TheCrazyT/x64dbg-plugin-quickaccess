@@ -24,4 +24,4 @@ deploy:
   on:
     branch: master
   auth_token:
-    secure: y2lWns25+B5XT5M7ho50MtyWyKIUK8fs5P+yxjPdkRnb+GptWo6RcuKp9aL1Mdit
+    secure: DHTTS/63f8fwUW0xbfxz6hEJ/1bb5MxVKAXucdp4su7nKWILMEOFG3AOjU0TPCQs
