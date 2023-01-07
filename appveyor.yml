@@ -18,7 +18,7 @@ build_script:
 - cmd: "echo building for arch: %VCVARSPARAM% msvc: %MSVC%"
 - cmd: set PATH=C:\Qt\5.6\%MSVC%\bin;%PATH%
 - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" %VCVARSPARAM%
-- cmd: qmake ${DBG} quickaccess.pro
+- cmd: qmake %DBG% quickaccess.pro
 - cmd: dir
 - cmd: nmake
 - cmd: dir
