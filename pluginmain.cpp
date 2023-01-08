@@ -95,6 +95,9 @@ DLL_EXPORT void plugsetup(PLUG_SETUPSTRUCT* setupStruct){
     executeOnGuiThreadAndWait([]{
         // Create the QuickAccess dialog
         QWidget* wnd = QApplication::activeWindow();
+        if(wnd == NULL){
+            wnd = QApplication::topLevelWidgets().at(0);
+        }
         dbg(wnd->objectName().toStdString().c_str());
         QMainWindow* mwnd = qobject_cast<QMainWindow*>(wnd);
         if(mwnd != nullptr){

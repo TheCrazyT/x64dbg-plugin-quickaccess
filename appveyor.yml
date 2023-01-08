@@ -35,5 +35,6 @@ deploy:
 - provider: GitHub
   on:
     branch: master
+  artifact: release_x86,release_x64
   auth_token:
     secure: DHTTS/63f8fwUW0xbfxz6hEJ/1bb5MxVKAXucdp4su7nKWILMEOFG3AOjU0TPCQs
