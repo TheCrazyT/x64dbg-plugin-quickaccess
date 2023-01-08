@@ -96,7 +96,12 @@ DLL_EXPORT void plugsetup(PLUG_SETUPSTRUCT* setupStruct){
         // Create the QuickAccess dialog
         QWidget* wnd = QApplication::activeWindow();
         if(wnd == NULL){
-            wnd = QApplication::topLevelWidgets().at(0);
+            foreach (QWidget *w, qApp->topLevelWidgets()){
+				if (QMainWindow* mainWin = qobject_cast<QMainWindow*>(w)) {
+					wnd = w;
+					break;
+				}
+			}
         }
         dbg(wnd->objectName().toStdString().c_str());
         QMainWindow* mwnd = qobject_cast<QMainWindow*>(wnd);
