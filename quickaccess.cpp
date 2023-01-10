@@ -42,6 +42,16 @@ QuickAccess::QuickAccess(QMainWindow* mwnd) : QDialog(mwnd){
             dbg(action->text().toStdString().c_str());
             parseMenu(action, 1, actionList);
         }
+        foreach (QAction* action, mwnd->actions()){
+            dbg(action->text().toStdString().c_str());
+            parseMenu(action, 1, actionList);
+        }
+		foreach(QWidget* widget, findChildren<QWidget*>(QString(), Qt::FindChildrenRecursively)) {
+			foreach(QAction* action, widget->actions()) {
+				dbg(action->text().toStdString().c_str());
+				parseMenu(action, 1, actionList);
+			}
+		}
     }
 
     auto completer = new QCompleter(txt);
@@ -67,15 +77,15 @@ void QuickAccess::display(){
 bool findByString(QString txt, QAction* menuAction){
         QMenu* menu = menuAction->menu();
         if(menu != NULL){
-            foreach(QAction* action, menu->actions()){
+            foreach(QAction* action, menu->actions()) {
                 if(action != NULL){
-                    if(findByString(txt, action)){
+                    if(findByString(txt, action)) {
                         return true;
                     }
                 }
             }
         }else{
-            if(menuAction->text().replace("&","").toLower().contains(txt.toLower())){
+            if(menuAction->text().replace("&","").toLower().contains(txt.toLower())) {
                 emit menuAction->trigger();
                 return true;
             }
@@ -85,16 +95,34 @@ bool findByString(QString txt, QAction* menuAction){
 
 void QuickAccess::txtReturnPressed(){
     dbg("return pressed");
-
+	boolean found = false;
     if(menuBar != NULL){
         dbg("Mainwindow valid.");
         foreach(QAction* action, menuBar->actions()){
-            if(findByString(txt->text(), action)){
+           if(findByString(txt->text(), action)){
+			   found = true;
                break;
            }
         }
     }
-
+	if((!found)&&(parent() != NULL)){
+		foreach(QAction* action, ((QMainWindow*)parent())->actions()) {
+		   if(findByString(txt->text(), action)){
+			   found = true;
+			   break;
+		   }
+		}
+		if(!found) {
+			foreach(QWidget* widget, findChildren<QWidget*>(QString(), Qt::FindChildrenRecursively)) {
+				foreach(QAction* action, widget->actions()){
+				   if(findByString(txt->text(), action)){
+					   found = true;
+					   break;
+				   }
+				}
+			}
+		}
+	}
     hide();
     accept();
 }
