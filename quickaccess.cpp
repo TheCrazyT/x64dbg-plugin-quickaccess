@@ -21,13 +21,14 @@ static void parseMenu(QAction* menuAction, int level, QStringList& list) {
     }
 }
 
-static void parseWidget(QWidget* mainWidget,QStringList& actionList) {
-	foreach(QWidget* widget, mainWidget->findChildren<QWidget*>(QString(), Qt::FindChildrenRecursively)) {
-		foreach(QAction* action, widget->actions()) {
-			dbg(action->text().toStdString().c_str());
-			parseMenu(action, 1, actionList);
+static void parseWidget(QMainWindow* mwnd, QStringList& actionList) {
+	foreach(QWidget* widget, mwnd->findChildren<QWidget*>(QString(), Qt::FindChildrenRecursively)) {
+		if(widget != mwnd->menuBar()) {
+			foreach(QAction* action, widget->actions()) {
+				dbg(action->text().toStdString().c_str());
+				parseMenu(action, 1, actionList);
+			}
 		}
-		parseWidget(widget, actionList);
 	}
 }
 
@@ -118,7 +119,7 @@ void QuickAccess::txtReturnPressed() {
 		   }
 		}
 		if(!found) {
-			foreach(QWidget* widget, findChildren<QWidget*>(QString(), Qt::FindChildrenRecursively)) {
+			foreach(QWidget* widget, ((QMainWindow*)parent())->findChildren<QWidget*>(QString(), Qt::FindChildrenRecursively)) {
 				foreach(QAction* action, widget->actions()){
 				   if(findByString(txt->text(), action)){
 					   found = true;
