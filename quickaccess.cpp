@@ -7,10 +7,10 @@
 #include <QStringListModel>
 #include <QCompleter>
 
-static void parseMenu(QAction* menuAction, int level, QStringList& list){
+static void parseMenu(QAction* menuAction, int level, QStringList& list) {
     QMenu* menu = menuAction->menu();
     if(menu != nullptr){
-        foreach(QAction* action, menu->actions()){
+        foreach(QAction* action, menu->actions()) {
             if(action != nullptr){
                 dbgf("%0*d%s\n", level, 0, action->text().toStdString().c_str());
                 parseMenu(action, level+1, list);
@@ -19,6 +19,16 @@ static void parseMenu(QAction* menuAction, int level, QStringList& list){
     }else{
         list.append(menuAction->text().replace("&",""));
     }
+}
+
+static void parseWidget(QWidget* mainWidget,QStringList& actionList) {
+	foreach(QWidget* widget, mainWidget->findChildren<QWidget*>(QString(), Qt::FindChildrenRecursively)) {
+		foreach(QAction* action, widget->actions()) {
+			dbg(action->text().toStdString().c_str());
+			parseMenu(action, 1, actionList);
+		}
+		parseWidget(widget, actionList);
+	}
 }
 
 QuickAccess::QuickAccess(QMainWindow* mwnd) : QDialog(mwnd){
@@ -46,12 +56,7 @@ QuickAccess::QuickAccess(QMainWindow* mwnd) : QDialog(mwnd){
             dbg(action->text().toStdString().c_str());
             parseMenu(action, 1, actionList);
         }
-		foreach(QWidget* widget, findChildren<QWidget*>(QString(), Qt::FindChildrenRecursively)) {
-			foreach(QAction* action, widget->actions()) {
-				dbg(action->text().toStdString().c_str());
-				parseMenu(action, 1, actionList);
-			}
-		}
+		parseWidget(mwnd, actionList);
     }
 
     auto completer = new QCompleter(txt);
@@ -64,7 +69,7 @@ QuickAccess::QuickAccess(QMainWindow* mwnd) : QDialog(mwnd){
     txt->setCompleter(completer);
 }
 
-void QuickAccess::display(){
+void QuickAccess::display() {
     show();
     raise();
     activateWindow();
@@ -93,7 +98,7 @@ bool findByString(QString txt, QAction* menuAction){
         return false;
 }
 
-void QuickAccess::txtReturnPressed(){
+void QuickAccess::txtReturnPressed() {
     dbg("return pressed");
 	boolean found = false;
     if(menuBar != NULL){
@@ -105,7 +110,7 @@ void QuickAccess::txtReturnPressed(){
            }
         }
     }
-	if((!found)&&(parent() != NULL)){
+	if((!found)&&(parent() != NULL)) {
 		foreach(QAction* action, ((QMainWindow*)parent())->actions()) {
 		   if(findByString(txt->text(), action)){
 			   found = true;
