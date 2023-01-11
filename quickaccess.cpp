@@ -7,17 +7,24 @@
 #include <QStringListModel>
 #include <QCompleter>
 
-static void parseMenu(QAction* menuAction, int level, QStringList& list) {
+static void parseMenu(QAction* menuAction, int level, QStringList& list, QString parentName, boolean addParentPath) {
     QMenu* menu = menuAction->menu();
     if(menu != nullptr){
         foreach(QAction* action, menu->actions()) {
             if(action != nullptr){
                 dbgf("%0*d%s\n", level, 0, action->text().toStdString().c_str());
-                parseMenu(action, level+1, list);
+				parentName = menuAction->text();
+                parseMenu(action, level+1, list, parentName, addParentPath);
             }
         }
     }else{
-        list.append(menuAction->text().replace("&",""));
+		char buf[1024];
+		if(addParentPath){
+			sprintf(&buf[0],"%s -> %s", parentName.toStdString().c_str(), menuAction->text().replace("&","").toStdString().c_str());
+		}else{
+			sprintf(&buf[0],"%s", menuAction->text().replace("&","").toStdString().c_str());
+		}
+        list.append(buf);
     }
 }
 
@@ -26,7 +33,7 @@ static void parseWidget(QMainWindow* mwnd, QStringList& actionList) {
 		if(widget != mwnd->menuBar()) {
 			foreach(QAction* action, widget->actions()) {
 				dbg(action->text().toStdString().c_str());
-				parseMenu(action, 1, actionList);
+				parseMenu(action, 1, actionList, QString(), true);
 			}
 		}
 	}
@@ -51,11 +58,11 @@ QuickAccess::QuickAccess(QMainWindow* mwnd) : QDialog(mwnd){
         dbg("Mainwindow valid.");
         foreach (QAction* action, menuBar->actions()){
             dbg(action->text().toStdString().c_str());
-            parseMenu(action, 1, actionList);
+            parseMenu(action, 1, actionList, QString(), false);
         }
         foreach (QAction* action, mwnd->actions()){
             dbg(action->text().toStdString().c_str());
-            parseMenu(action, 1, actionList);
+            parseMenu(action, 1, actionList, QString(), false);
         }
 		parseWidget(mwnd, actionList);
     }
@@ -91,7 +98,11 @@ bool findByString(QString txt, QAction* menuAction){
                 }
             }
         }else{
-            if(menuAction->text().replace("&","").toLower().contains(txt.toLower())) {
+			QString find = txt.toLower();
+			if(find.contains("->")){
+				find = find.mid(find.indexOf(" -> ")+4);
+			}
+            if(menuAction->text().replace("&","").toLower().contains(find)) {
                 emit menuAction->trigger();
                 return true;
             }
