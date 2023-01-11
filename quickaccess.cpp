@@ -20,7 +20,7 @@ static void parseMenu(QAction* menuAction, int level, QStringList& list, QString
     }else{
 		char buf[1024];
 		if(addParentPath){
-			sprintf(&buf[0],"%s -> %s", parentName.toStdString().c_str(), menuAction->text().replace("&","").toStdString().c_str());
+			sprintf(&buf[0],"%s -> %s", parentName.replace("&","").toStdString().c_str(), menuAction->text().replace("&","").toStdString().c_str());
 		}else{
 			sprintf(&buf[0],"%s", menuAction->text().replace("&","").toStdString().c_str());
 		}
@@ -33,7 +33,8 @@ static void parseWidget(QMainWindow* mwnd, QStringList& actionList) {
 		if(widget != mwnd->menuBar()) {
 			foreach(QAction* action, widget->actions()) {
 				dbg(action->text().toStdString().c_str());
-				parseMenu(action, 1, actionList, QString(), true);
+				QString parentName = widget->windowTitle();
+				parseMenu(action, 1, actionList, parentName, true);
 			}
 		}
 	}
