@@ -6,6 +6,7 @@
 #include <QGridLayout>
 #include <QStringListModel>
 #include <QCompleter>
+#include <QListView>
 
 static void parseMenu(QAction* menuAction, int level, QStringList& list, QString parentName, boolean addParentPath) {
     QMenu* menu = menuAction->menu();
@@ -74,6 +75,10 @@ QuickAccess::QuickAccess(QMainWindow* mwnd) : QDialog(mwnd){
     completer->setModel(completerEntries);
     completer->setCompletionMode(QCompleter::PopupCompletion);
     completer->setFilterMode(Qt::MatchContains);
+
+    completer->setMaxVisibleItems(20);
+    QListView* popup = static_cast<QListView*>(completer->popup());
+    popup->setMinimumWidth(500);
 
     txt->setCompleter(completer);
 }

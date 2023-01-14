@@ -1,0 +1,32 @@
+/*
+used for github codespaces.
+
+also needed to execute the following terminal commands:
+sudo apt update
+sudo apt-get install qtbase5-dev
+sudo apt install g++-mingw-w64
+
+fully compiling probably won't work (yet?).
+so I'm still stuck to appveyor ...
+atleast I don't need to commit to appveyor that othen anymore ...
+*/
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
+                "/usr/include/x86_64-linux-gnu/qt5",
+                "/usr/include/x86_64-linux-gnu/qt5/QtCore",
+                "/usr/x86_64-w64-mingw32/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/x86_64-w64-mingw32-gcc",
+            "cStandard": "c17",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-clang-x64"
+        }
+    ],
+    "version": 4
+}
