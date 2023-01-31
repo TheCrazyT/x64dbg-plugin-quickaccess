@@ -1,10 +1,12 @@
 #pragma once
 
+#include <QCompleter>
 #include <QDialog>
-#include <QMainWindow>
 #include <QLineEdit>
 #include <QListView>
+#include <QMainWindow>
 #include <QMenuBar>
+
 
 class QuickAccess : public QDialog{
     Q_OBJECT
