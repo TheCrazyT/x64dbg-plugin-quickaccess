@@ -21,6 +21,14 @@ public:
         m_itemSize = value;
     }
 
+    uint getWindowWidth(){
+        return m_windowWidth;
+    }
+
+    uint getItemSize(){
+        return m_itemSize;
+    }
+
 private slots:
     void txtReturnPressed();
 
