@@ -38,7 +38,7 @@ const int ME_QUICKACCESS = 0x19223301;
 const int ME_WINDOW_WIDTH = 0x19223302;
 const int ME_ITEM_SIZE = 0x19223303;
 
-const char* REGISTRY_FOLDER = R"(HKEY_LOCAL_MACHINE\SOFTWARE\CrazyT\quickaccess)";
+const char* REGISTRY_FOLDER = R"(HKEY_CURRENT_USER\SOFTWARE\CrazyT\quickaccess)";
 
 static void executeOnGuiThreadAndWait(void(*worker)()){
     struct Context
@@ -80,7 +80,7 @@ static void cb_plugin_menuentry(CBTYPE cbType, void* info){
         case ME_WINDOW_WIDTH:
             {
                 int windowWidth = QInputDialog::getInt(NULL, QObject::tr(""),
-                                            QObject::tr("Window width:"), 500,
+                                            QObject::tr("Window width:"), qwin->getWindowWidth(),
                                             10, 5000,
                                             1, &ok);
                 if(ok){
@@ -93,7 +93,7 @@ static void cb_plugin_menuentry(CBTYPE cbType, void* info){
         case ME_ITEM_SIZE:
             {
                 int itemSize = QInputDialog::getInt(NULL, QObject::tr(""),
-                                            QObject::tr("Item size:"), 25,
+                                            QObject::tr("Item size:"), qwin->getItemSize(),
                                             10, 5000,
                                             1, &ok);
                 if(ok){
