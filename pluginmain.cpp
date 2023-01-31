@@ -38,6 +38,8 @@ const int ME_QUICKACCESS = 0x19223301;
 const int ME_WINDOW_WIDTH = 0x19223302;
 const int ME_ITEM_SIZE = 0x19223303;
 
+const char* REGISTRY_FOLDER = R"(HKEY_LOCAL_MACHINE\SOFTWARE\CrazyT\quickaccess)";
+
 static void executeOnGuiThreadAndWait(void(*worker)()){
     struct Context
     {
@@ -68,7 +70,7 @@ static bool cb_plugin_command(int argc, char** argv){
 static void cb_plugin_menuentry(CBTYPE cbType, void* info){
     Q_UNUSED(cbType);
     PLUG_CB_MENUENTRY* callbackInfo = (PLUG_CB_MENUENTRY*)info;
-    QSettings registry(R"(HKEY_LOCAL_MACHINE\SOFTWARE\CrazyT\quickaccess)", QSettings::NativeFormat);
+    QSettings registry(REGISTRY_FOLDER, QSettings::NativeFormat);
     bool ok;
     switch(callbackInfo->hEntry) {
         case ME_QUICKACCESS:
@@ -78,22 +80,26 @@ static void cb_plugin_menuentry(CBTYPE cbType, void* info){
         case ME_WINDOW_WIDTH:
             {
                 int windowWidth = QInputDialog::getInt(NULL, QObject::tr(""),
-                                            QObject::tr("Window width:"), 10, 5000,
-                                            500, 1, &ok);
+                                            QObject::tr("Window width:"), 500,
+                                            10, 5000,
+                                            1, &ok);
                 if(ok){
                     qwin->setWindowWidth(windowWidth);
                     registry.setValue("window_width",windowWidth);
+                    registry.sync();
                 }
             }
             break;
         case ME_ITEM_SIZE:
             {
                 int itemSize = QInputDialog::getInt(NULL, QObject::tr(""),
-                                            QObject::tr("Item size:"), 10, 5000,
-                                            25, 1, &ok);
+                                            QObject::tr("Item size:"), 25,
+                                            10, 5000,
+                                            1, &ok);
                 if(ok){
                     qwin->setItemSize(itemSize);
                     registry.setValue("item_size",itemSize);
+                    registry.sync();
                 }
             }
             break;
@@ -148,7 +154,7 @@ DLL_EXPORT void plugsetup(PLUG_SETUPSTRUCT* setupStruct){
             dbg("Mainwindow found.");
             uint itemSize;
             uint windowWidth;
-            QSettings registry(R"(HKEY_LOCAL_MACHINE\SOFTWARE\CrazyT\quickaccess)", QSettings::NativeFormat);
+            QSettings registry(REGISTRY_FOLDER, QSettings::NativeFormat);
             itemSize = registry.value("item_size",25).toUInt();
             windowWidth = registry.value("window_width",500).toUInt();
             qwin = new QuickAccess(mwnd, itemSize, windowWidth);
