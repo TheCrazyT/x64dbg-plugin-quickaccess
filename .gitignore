@@ -10,3 +10,4 @@ release
 
 #those get generated
 Makefile*
+.qmake.stash

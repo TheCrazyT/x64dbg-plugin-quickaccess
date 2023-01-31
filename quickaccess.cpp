@@ -41,7 +41,10 @@ static void parseWidget(QMainWindow* mwnd, QStringList& actionList) {
 	}
 }
 
-QuickAccess::QuickAccess(QMainWindow* mwnd) : QDialog(mwnd){
+QuickAccess::QuickAccess(QMainWindow* mwnd, uint itemSize, uint windowWidth) : QDialog(mwnd){
+    this->setWindowWidth(windowWidth);
+    this->setItemSize(itemSize);
+
     txt = new QLineEdit();
     auto layout = new QGridLayout();
     layout->addWidget(txt->window(), 0, 0);
@@ -76,9 +79,9 @@ QuickAccess::QuickAccess(QMainWindow* mwnd) : QDialog(mwnd){
     completer->setCompletionMode(QCompleter::PopupCompletion);
     completer->setFilterMode(Qt::MatchContains);
 
-    completer->setMaxVisibleItems(20);
+    completer->setMaxVisibleItems(items);
     QListView* popup = static_cast<QListView*>(completer->popup());
-    popup->setMinimumWidth(500);
+    popup->setMinimumWidth(width);
 
     txt->setCompleter(completer);
 }

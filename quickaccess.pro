@@ -54,6 +54,13 @@ HEADERS += \
     pluginsdk/bridgelist.h \
     pluginsdk/bridgemain.h \
 
+contains(DO_MSYS, 1) {
+    message(adding msys include path)
+    INCLUDEPATH += /usr/x86_64-w64-mingw32/include/
+    QMAKE_CXX = x86_64-w64-mingw32-g++
+    QMAKE_CC = x86_64-w64-mingw32-gcc
+}
+
 contains(QMAKE_HOST.arch, x86_64) {
     LIBS += -L$$PWD/pluginsdk/ -lx64bridge -lx64dbg
     TARGET_EXT = .dp64

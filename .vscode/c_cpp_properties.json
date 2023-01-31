@@ -2,9 +2,10 @@
 used for github codespaces.
 
 also needed to execute the following terminal commands:
-sudo apt update
-sudo apt-get install qtbase5-dev
-sudo apt install g++-mingw-w64
+sudo apt update && sudo apt-get install qtbase5-dev && sudo apt install g++-mingw-w64
+
+theoretically compile with (still buggy - won't compile but still helpful to find errors):
+qmake DO_MSYS=1 && make
 
 fully compiling probably won't work (yet?).
 so I'm still stuck to appveyor ...
