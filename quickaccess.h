@@ -3,6 +3,7 @@
 #include <QDialog>
 #include <QMainWindow>
 #include <QLineEdit>
+#include <QListView>
 #include <QMenuBar>
 
 class QuickAccess : public QDialog{
@@ -15,10 +16,19 @@ public:
 
     void setWindowWidth(uint value){
         m_windowWidth = value;
+        if(txt != NULL){
+            auto completer = txt->getCompleter();
+            QListView* popup = static_cast<QListView*>(completer->popup());
+            popup->setMinimumWidth(value);
+        }
     }
 
     void setItemSize(uint value){
         m_itemSize = value;
+        if(txt != NULL){
+            auto completer = txt->getCompleter();
+            completer->setMaxVisibleItems(value);
+        }
     }
 
     uint getWindowWidth(){
