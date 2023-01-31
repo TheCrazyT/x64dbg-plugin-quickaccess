@@ -17,7 +17,7 @@ public:
     void setWindowWidth(uint value){
         m_windowWidth = value;
         if(txt != NULL){
-            auto completer = txt->getCompleter();
+            auto completer = txt->completer();
             QListView* popup = static_cast<QListView*>(completer->popup());
             popup->setMinimumWidth(value);
         }
@@ -26,7 +26,7 @@ public:
     void setItemSize(uint value){
         m_itemSize = value;
         if(txt != NULL){
-            auto completer = txt->getCompleter();
+            auto completer = txt->completer();
             completer->setMaxVisibleItems(value);
         }
     }
