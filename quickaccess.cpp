@@ -79,9 +79,9 @@ QuickAccess::QuickAccess(QMainWindow* mwnd, uint itemSize, uint windowWidth) : Q
     completer->setCompletionMode(QCompleter::PopupCompletion);
     completer->setFilterMode(Qt::MatchContains);
 
-    completer->setMaxVisibleItems(items);
+    completer->setMaxVisibleItems(itemSize);
     QListView* popup = static_cast<QListView*>(completer->popup());
-    popup->setMinimumWidth(width);
+    popup->setMinimumWidth(windowWidth);
 
     txt->setCompleter(completer);
 }
