@@ -5,8 +5,11 @@
 #include <QWidget>
 #include <QMainWindow>
 #include <QWindow>
+#include <QInputDialog>
+#include <QSettings>
 #include <QDialog>
 #include <QTimer>
+#include <QObject>
 #include <QWindowList>
 #include <QMenuBar>
 #include <QLineEdit>
@@ -32,6 +35,10 @@ int hMenu;
 QuickAccess* qwin = nullptr;
 
 const int ME_QUICKACCESS = 0x19223301;
+const int ME_WINDOW_WIDTH = 0x19223302;
+const int ME_ITEM_SIZE = 0x19223303;
+
+const char* REGISTRY_FOLDER = R"(HKEY_CURRENT_USER\SOFTWARE\CrazyT\quickaccess)";
 
 static void executeOnGuiThreadAndWait(void(*worker)()){
     struct Context
@@ -63,11 +70,42 @@ static bool cb_plugin_command(int argc, char** argv){
 static void cb_plugin_menuentry(CBTYPE cbType, void* info){
     Q_UNUSED(cbType);
     PLUG_CB_MENUENTRY* callbackInfo = (PLUG_CB_MENUENTRY*)info;
-    if(callbackInfo->hEntry == ME_QUICKACCESS){
-        dbg("Menu clicked");
-        show_qa_window();
-    }else{
-        dbgf("Entry: %016x != %16x\n", callbackInfo->hEntry, ME_QUICKACCESS);
+    QSettings registry(REGISTRY_FOLDER, QSettings::NativeFormat);
+    bool ok;
+    switch(callbackInfo->hEntry) {
+        case ME_QUICKACCESS:
+            dbg("Menu clicked");
+            show_qa_window();
+            break;
+        case ME_WINDOW_WIDTH:
+            {
+                int windowWidth = QInputDialog::getInt(NULL, QObject::tr(""),
+                                            QObject::tr("Window width:"), qwin->getWindowWidth(),
+                                            10, 5000,
+                                            1, &ok);
+                if(ok){
+                    qwin->setWindowWidth(windowWidth);
+                    registry.setValue("window_width",windowWidth);
+                    registry.sync();
+                }
+            }
+            break;
+        case ME_ITEM_SIZE:
+            {
+                int itemSize = QInputDialog::getInt(NULL, QObject::tr(""),
+                                            QObject::tr("Item size:"), qwin->getItemSize(),
+                                            10, 5000,
+                                            1, &ok);
+                if(ok){
+                    qwin->setItemSize(itemSize);
+                    registry.setValue("item_size",itemSize);
+                    registry.sync();
+                }
+            }
+            break;
+        default:
+            dbgf("invalid entry: %016x\n", callbackInfo->hEntry);
+            break;
     }
 }
 
@@ -90,6 +128,13 @@ DLL_EXPORT void plugsetup(PLUG_SETUPSTRUCT* setupStruct){
     if(!_plugin_menuaddentry(hMenu, ME_QUICKACCESS, "QuickAccess")){
         dbg("Error registering the \"quickaccess\" menu!");
     }
+    _plugin_menuaddseparator(hMenu);
+    if(!_plugin_menuaddentry(hMenu, ME_ITEM_SIZE, "Set item size")){
+        dbg("Error registering the \"Set item size\" menu!");
+    }
+    if(!_plugin_menuaddentry(hMenu, ME_WINDOW_WIDTH, "Set window width")){
+        dbg("Error registering the \"Set window width\" menu!");
+    }
     _plugin_menuentrysethotkey(pluginHandle, ME_QUICKACCESS, "Ctrl+3");
 
     executeOnGuiThreadAndWait([]{
@@ -107,7 +152,12 @@ DLL_EXPORT void plugsetup(PLUG_SETUPSTRUCT* setupStruct){
         QMainWindow* mwnd = qobject_cast<QMainWindow*>(wnd);
         if(mwnd != nullptr){
             dbg("Mainwindow found.");
-            qwin = new QuickAccess(mwnd);
+            uint itemSize;
+            uint windowWidth;
+            QSettings registry(REGISTRY_FOLDER, QSettings::NativeFormat);
+            itemSize = registry.value("item_size",25).toUInt();
+            windowWidth = registry.value("window_width",500).toUInt();
+            qwin = new QuickAccess(mwnd, itemSize, windowWidth);
         }
     });
 
