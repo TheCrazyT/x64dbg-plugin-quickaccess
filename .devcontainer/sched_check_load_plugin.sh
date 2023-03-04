@@ -1,3 +1,4 @@
+#!/bin/bash
 apt update
 apt install -y curl
 RELEASE_INFO=$(curl -s -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28"   https://api.github.com/repos/x64dbg/x64dbg/releases)
