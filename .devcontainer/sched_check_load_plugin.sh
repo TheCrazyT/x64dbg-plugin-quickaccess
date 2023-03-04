@@ -9,7 +9,7 @@ DOWNLOAD_URL=https://github.com/x64dbg/x64dbg/releases/download/snapshot/${FILE_
 CURRENT_DATE=$(date +"%Y-%d-%m")
 if [ "${RELEASE_DATE}" == $(date +"%Y-%d-%m") ] || [ "${DO_EXEC}" == "1" ]
 then
-    apt install -y xvfb
+    apt install -y xvfb wine
     Xvfb :0 -screen 0 1024x768x16 &
     cd /tmp
     wget ${DOWNLOAD_URL} && unzip ${FILE_NAME}
