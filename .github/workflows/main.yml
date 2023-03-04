@@ -8,4 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Every time
-        run: .devcontainer/sched_check_load_plugin.sh
+        run: bash ${GITHUB_WORKSPACE}/.devcontainer/sched_check_load_plugin.sh
