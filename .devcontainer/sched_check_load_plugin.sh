@@ -1,15 +1,17 @@
 #!/bin/bash
-apt update
-apt install -y curl
+sudo apt update
+sudo apt install -y curl
 RELEASE_INFO=$(curl -s -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28"   https://api.github.com/repos/x64dbg/x64dbg/releases)
 BLOCK=$(echo "${RELEASE_INFO}"|grep -P -A8 'tag_name.+snapshot"')
 RELEASE_DATE=$(echo "${BLOCK}"|grep published_at|grep -Po '(?!")\d{4}-\d{2}-\d{2}')
 FILE_NAME=$(echo "${BLOCK}"|grep -Po "snapshot.+.zip")
 DOWNLOAD_URL=https://github.com/x64dbg/x64dbg/releases/download/snapshot/${FILE_NAME}
 CURRENT_DATE=$(date +"%Y-%d-%m")
+echo RELEASE_DATE: ${RELEASE_DATE}
+echo CURRENT_DATE: ${CURRENT_DATE}
 if [ "${RELEASE_DATE}" == $(date +"%Y-%d-%m") ] || [ "${DO_EXEC}" == "1" ]
 then
-    apt install -y xvfb wine
+    sudo apt install -y xvfb wine
     Xvfb :0 -screen 0 1024x768x16 &
     cd /tmp
     wget ${DOWNLOAD_URL} && unzip ${FILE_NAME}
