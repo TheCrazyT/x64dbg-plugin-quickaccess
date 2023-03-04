@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Every time
-        run: ls -lah ${GITHUB_WORKSPACE} && ls -lah ${GITHUB_WORKSPACE}/.devcontainer && bash ${GITHUB_WORKSPACE}/.devcontainer/sched_check_load_plugin.sh
+        run: bash ${GITHUB_WORKSPACE}/.devcontainer/sched_check_load_plugin.sh
