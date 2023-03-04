@@ -1,3 +1,4 @@
+name: 'sched_check_load_plugin'
 on:
   schedule:
     - cron:  '30 5 * * *'
