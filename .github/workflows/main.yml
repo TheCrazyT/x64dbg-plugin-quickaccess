@@ -1,0 +1,11 @@
+name: 'sched_check_load_plugin'
+on:
+  schedule:
+    - cron:  '30 5 * * *'
+  workflow_dispatch:
+jobs:
+  test_schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Every time
+        run: .devcontainer/sched_check_load_plugin.sh
