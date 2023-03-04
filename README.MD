@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/t38uon2uf8pwm6nd?svg=true)](https://ci.appveyor.com/project/TheCrazyT/x64dbg-plugin-quickaccess)
+[![Build status](https://ci.appveyor.com/api/projects/status/t38uon2uf8pwm6nd/branch/master?svg=true)](https://ci.appveyor.com/project/TheCrazyT/x64dbg-plugin-quickaccess)
 
 For the lazy people that can't remember all the shortcuts.
 The default shortcut is ctrl+3.
