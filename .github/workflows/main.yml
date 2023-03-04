@@ -7,5 +7,6 @@ jobs:
   test_schedule:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - name: Every time
-        run: .devcontainer/sched_check_load_plugin.sh
+        run: bash ${GITHUB_WORKSPACE}/.devcontainer/sched_check_load_plugin.sh
