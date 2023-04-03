@@ -20,6 +20,7 @@ jobs:
       - name: Check file existence
         id: check_files
         uses: andstor/file-existence-action@v1
+        if: (success() || failure())
         with:
           files: /tmp/err.log
       - uses: actions/upload-artifact@v3
