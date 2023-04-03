@@ -23,7 +23,7 @@ then
     cp /tmp/quickaccess.dp64 /tmp/release/x64/plugins/
     DISPLAY=:0.0 WINEDEBUG=+loaddll timeout 10 wine /tmp/release/x64/x64dbg.exe 2>err.log
     grep quickaccess.dp64 err.log
-    if [ $? == 0]
+    if [ $? == 0 ]
     then
         exit 0
     fi
