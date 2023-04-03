@@ -19,7 +19,7 @@ jobs:
         run: bash ${GITHUB_WORKSPACE}/.devcontainer/sched_check_load_plugin.sh
       - name: Check file existence
         id: check_files
-        uses: andstor/file-existence-action@v1
+        uses: andstor/file-existence-action@v2
         if: (success() || failure())
         with:
           files: /tmp/err.log
