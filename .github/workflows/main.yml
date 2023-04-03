@@ -3,6 +3,13 @@ on:
   schedule:
     - cron:  '30 5 * * *'
   workflow_dispatch:
+   inputs:
+      DO_EXEC:
+        type: string
+        default: '1'
+        required: true
+env:
+  DO_EXEC: ${{ github.event.inputs.DO_EXEC }}
 jobs:
   test_schedule:
     runs-on: ubuntu-latest
@@ -10,3 +17,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: Every time
         run: bash ${GITHUB_WORKSPACE}/.devcontainer/sched_check_load_plugin.sh
+      - uses: actions/upload-artifact@v3
+        with:
+          name: logg
+          path: /tmp/err.log
+          retention-days: 5
