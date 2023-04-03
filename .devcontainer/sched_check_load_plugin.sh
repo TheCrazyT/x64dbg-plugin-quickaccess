@@ -21,7 +21,7 @@ then
     wget ${DOWNLOAD_URL2}
     mkdir /tmp/release/x64/plugins
     cp /tmp/quickaccess.dp64 /tmp/release/x64/plugins/
-    DISPLAY=:0.0 WINEDEBUG=+loaddll timeout 10 wine /tmp/release/x64/x64dbg.exe 2>err.log
+    DISPLAY=:0.0 WINEDEBUG=+loaddll timeout 60 wine /tmp/release/x64/x64dbg.exe 2>err.log
     grep quickaccess.dp64 err.log
     if [ "$?" == "0" ]
     then
