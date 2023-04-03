@@ -6,7 +6,7 @@ BLOCK=$(echo "${RELEASE_INFO}"|grep -P -A8 'tag_name.+snapshot"')
 RELEASE_DATE=$(echo "${BLOCK}"|grep published_at|grep -Po '(?!")\d{4}-\d{2}-\d{2}')
 FILE_NAME=$(echo "${BLOCK}"|grep -Po "snapshot.+.zip")
 DOWNLOAD_URL=https://github.com/x64dbg/x64dbg/releases/download/snapshot/${FILE_NAME}
-CURRENT_DATE=$(date +"%Y-%d-%m")
+CURRENT_DATE=$(date +"%Y-%m-%d")
 echo RELEASE_DATE: ${RELEASE_DATE}
 echo CURRENT_DATE: ${CURRENT_DATE}
 if [ "${RELEASE_DATE}" == $(date +"%Y-%d-%m") ] || [ "${DO_EXEC}" == "1" ]
