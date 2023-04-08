@@ -37,4 +37,4 @@ deploy:
     branch: master
   artifact: release_x86,release_x64
   auth_token:
-    secure: C2p2yoVzRqih8hfZ0B3N6rw0IoO0EvZnpd1bZOqzu+/KwtBhoIIjM4qOv2OkVoac
+    secure: pVX8UX9OlbhF5BSC8Qv7HG3BkuiOp7IRHSYJf7NMqc/hNRRKi/tHTaVMmcXM2M3g
