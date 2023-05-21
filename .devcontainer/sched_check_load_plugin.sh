@@ -7,9 +7,11 @@ RELEASE_DATE=$(echo "${BLOCK}"|grep published_at|grep -Po '(?!")\d{4}-\d{2}-\d{2
 FILE_NAME=$(echo "${BLOCK}"|grep -Po "snapshot.+.zip")
 DOWNLOAD_URL=https://github.com/x64dbg/x64dbg/releases/download/snapshot/${FILE_NAME}
 CURRENT_DATE=$(date +"%Y-%m-%d")
+CURRENT_DATE_MINUS_1=$(date +"%Y-%m-%d" -d "-1 days")
 echo RELEASE_DATE: ${RELEASE_DATE}
 echo CURRENT_DATE: ${CURRENT_DATE}
-if [ "${RELEASE_DATE}" == "${CURRENT_DATE}" ] || [ "${DO_EXEC}" == "1" ]
+echo CURRENT_DATE_MINUS_1: ${CURRENT_DATE_MINUS_1}
+ 4 if ([ "${RELEASE_DATE}" == "${CURRENT_DATE}" ] || [  "${RELEASE_DATE}" == "${CURRENT_DATE_MINUS_1}" ]) || [ "${DO_EXEC}" == "1" ]
 then
     sudo apt install -y xvfb wine
     Xvfb :0 -screen 0 1024x768x16 &
