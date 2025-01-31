@@ -23,7 +23,7 @@ jobs:
         if: (success() || failure())
         with:
           files: /tmp/err.log
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: (success() || failure()) && (steps.check_files.outputs.files_exists == 'true')
         with:
           name: logg
